@@ -3,6 +3,8 @@
 import random, itertools, pprint
 pp = pprint.pprint
 
+import algos
+
 class Card(object):
   def __init__(s, val):
     s._val = val
@@ -11,29 +13,13 @@ class Card(object):
     return s._val
 
   def __repr__(s):
-    return str(s._val)
-
-class StressfulAlgorithm(object):
-  # table : array of 4 Cards
-  # hands : array of 6 arrays of 4 Cards
-  # returns : None for no action, tuple of 2 Cards for a trade
-  def turn(s, table, hands):
-    return None
-
-class DoNothing(StressfulAlgorithm):
-  pass
-
-class TradeConstant(StressfulAlgorithm):
-  def turn(s, table, hands):
-    return table[0], hands[0][0]
-
+    return "*%s" % s._val
 
 def hands_are_solved(hands):
-  return all(map(lambda hand: all(map(lambda card: card.n == hand[0].n(), hand)), hands))
+  return all(map(lambda hand: all(map(lambda card: card.n() == hand[0].n(), hand)), hands))
 
 def execute_trade(trade_cards, table, hands):
-  # print "trading"
-  # print trade_cards
+  print "execute_trade(%s, table, hands)" % str(trade_cards)
 
   if trade_cards == None: return
   c1, c2 = trade_cards
@@ -55,8 +41,8 @@ def main():
   hands1 = group_n(deck[4:28], 4)
   hands2 = group_n(deck[28:52], 4)
 
-  algo1 = DoNothing()
-  algo2 = TradeConstant()
+  algo1 = algos.MSSimple1()
+  algo2 = algos.MSSimple1()
 
   while not all(map(lambda hands: hands_are_solved(hands), [hands1, hands2])):
     print "\nturn\n"
@@ -72,4 +58,12 @@ def main():
     execute_trade(algo1.turn(table, hands1), table, hands1)
     execute_trade(algo2.turn(table, hands2), table, hands2)
 
-main()
+  print "game over"
+
+
+try:
+  main()
+except KeyboardInterrupt: 
+  pass
+except:
+  raise
