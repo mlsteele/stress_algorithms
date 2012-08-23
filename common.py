@@ -1,9 +1,13 @@
 # python 2.7
 
+ENABLE_GRAPHICS = True
+
 import random, itertools, pprint
 pp = pprint.pprint
 
-import algos, graphics
+import algos
+if ENABLE_GRAPHICS:
+  import graphics
 
 class Card(object):
   def __init__(s, val):
@@ -53,8 +57,9 @@ def main():
     print "hands2"
     pp(hands2)
 
-    graphics.render("%s\n%s\n%s" % (str(table), str(hands1), str(hands2)))
-    graphics.handle_events()
+    if ENABLE_GRAPHICS:
+      graphics.render("%s\n%s\n%s" % (str(table), str(hands1), str(hands2)))
+      graphics.handle_events()
 
     execute_trade(algo1.turn(table, hands1), table, hands1)
     execute_trade(algo2.turn(table, hands2), table, hands2)
