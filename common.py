@@ -20,10 +20,21 @@ class StressfulAlgorithm(object):
   def turn(s, table, hands):
     return None
 
+class DoNothing(StressfulAlgorithm):
+  pass
+
+class TradeConstant(StressfulAlgorithm):
+  def turn(s, table, hands):
+    return table[0], hands[0][0]
+
+
 def hands_are_solved(hands):
   return all(map(lambda hand: all(map(lambda card: card.n == hand[0].n(), hand)), hands))
 
 def execute_trade(trade_cards, table, hands):
+  # print "trading"
+  # print trade_cards
+
   if trade_cards == None: return
   c1, c2 = trade_cards
   if c2 in table:
@@ -44,8 +55,8 @@ def main():
   hands1 = group_n(deck[4:28], 4)
   hands2 = group_n(deck[28:52], 4)
 
-  algo1 = StressfulAlgorithm()
-  algo2 = StressfulAlgorithm()
+  algo1 = DoNothing()
+  algo2 = TradeConstant()
 
   while not all(map(lambda hands: hands_are_solved(hands), [hands1, hands2])):
     print "\nturn\n"
@@ -59,6 +70,6 @@ def main():
     pp(hands2)
 
     execute_trade(algo1.turn(table, hands1), table, hands1)
-    execute_trade(algo1.turn(table, hands2), table, hands2)
+    execute_trade(algo2.turn(table, hands2), table, hands2)
 
 main()
