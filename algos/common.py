@@ -14,3 +14,7 @@ class DoNothing(StressfulAlgorithm):
 class TradeConstant(StressfulAlgorithm):
   def turn(s, table, hands):
     return table[0], hands[0][0]
+
+class RandomTrade(StressfulAlgorithm):
+  def turn(s, table, hands):
+    return random.choice(table), random.choice(random.choice(hands))

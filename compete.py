@@ -1,7 +1,7 @@
 #/usr/bin/env python
-import common
-from common import *
-common.TRACE_MOVES = False
+import main
+from main import *
+main.TRACE_MOVES = False
 
 import random
 import itertools

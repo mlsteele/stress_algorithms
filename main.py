@@ -1,7 +1,11 @@
 # python 2.7
 
+<<<<<<< HEAD:common.py
 ENABLE_GRAPHICS = True
 TRACE_MOVES = True
+=======
+ENABLE_GRAPHICS = False
+>>>>>>> move common -> main, tweak ms.randhand:main.py
 
 import random, itertools, time, pprint
 from card import Card
@@ -32,7 +36,7 @@ def execute_trade(trade_cards, table, hands):
     if hand.count(c2) == 1:
       hand[hand.index(c2)] = c1
 
-def main():
+def contest():
   deck = reduce(lambda x,y:x+y, [[Card(n) for n in range(1,14)] for suit in xrange(4)], [])
   random.shuffle(deck)
 
@@ -46,7 +50,7 @@ def main():
   algo1 = algos.MOStressPlayer()
   algo2 = algos.MSSimple1()
 
-  while not all(map(lambda hands: hands_are_solved(hands), [hands1, hands2])):
+  while not any(map(lambda hands: hands_are_solved(hands), [hands1, hands2])):
     print "\nturn\n"
     print "table"
     pp(table)
@@ -58,18 +62,29 @@ def main():
     if ENABLE_GRAPHICS:
       graphics.render("%s\n%s\n%s" % (str(table), str(hands1), str(hands2)))
       graphics.handle_events()
-      time.sleep(0.2)
+      time.sleep(0.02)
 
-    execute_trade(algo1.turn(table, hands1), table, hands1)
-    execute_trade(algo2.turn(table, hands2), table, hands2)
+    if random.random() > 0.5:
+      execute_trade(algo1.turn(table, hands1), table, hands1)
+    else:
+      execute_trade(algo2.turn(table, hands2), table, hands2)
+
+  print "who solved their hands?"
+  print "player 1        player 2"
+  print "  %s           %s  " % (hands_are_solved(hands1), hands_are_solved(hands2))
 
   print "game over"
+  return hands_are_solved(hands1), hands_are_solved(hands2)
 
+def n_contests(n):
+  return reduce(lambda a, c: [a[0] + c[0], a[1] + c[1]], [contest() for _ in xrange(n)], [0,0])
 
-if __name__ == '__main__':
-  try:
-    main()
-  except KeyboardInterrupt: 
-    pass
-  except:
-    raise
+try:
+  w1, w2 = n_contests(10)
+  print "won games"
+  print "player 1        player 2"
+  print "  %s           %s  " % (w1, w2)
+except KeyboardInterrupt: 
+  pass
+except:
+  raise
