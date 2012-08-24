@@ -1,11 +1,7 @@
 # python 2.7
 
-<<<<<<< HEAD:common.py
 ENABLE_GRAPHICS = True
 TRACE_MOVES = True
-=======
-ENABLE_GRAPHICS = False
->>>>>>> move common -> main, tweak ms.randhand:main.py
 
 import random, itertools, time, pprint
 from card import Card
@@ -47,10 +43,12 @@ def contest():
   hands1 = group_n(deck[4:28], 4)
   hands2 = group_n(deck[28:52], 4)
 
-  algo1 = algos.MOStressPlayer()
-  algo2 = algos.MSSimple1()
+  algo1 = algos.stressmo.MOStressPlayer()
+  # algo2 = algos.stressmo.MOStressPlayer()
+  algo2 = algos.ms.MSSimple1()
 
-  while not any(map(lambda hands: hands_are_solved(hands), [hands1, hands2])):
+  n_turns = 0
+  while not any(map(lambda hands: hands_are_solved(hands), [hands1, hands2])) and n_turns < 2000:
     print "\nturn\n"
     print "table"
     pp(table)
@@ -69,18 +67,20 @@ def contest():
     else:
       execute_trade(algo2.turn(table, hands2), table, hands2)
 
+    n_turns += 1
+
   print "who solved their hands?"
   print "player 1        player 2"
   print "  %s           %s  " % (hands_are_solved(hands1), hands_are_solved(hands2))
 
-  print "game over"
+  print "game over after %s turns" % n_turns
   return hands_are_solved(hands1), hands_are_solved(hands2)
 
 def n_contests(n):
   return reduce(lambda a, c: [a[0] + c[0], a[1] + c[1]], [contest() for _ in xrange(n)], [0,0])
 
 try:
-  w1, w2 = n_contests(10)
+  w1, w2 = n_contests(100)
   print "won games"
   print "player 1        player 2"
   print "  %s           %s  " % (w1, w2)
