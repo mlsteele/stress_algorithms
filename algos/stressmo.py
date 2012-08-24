@@ -4,12 +4,16 @@ from itertools import groupby
 
 
 class MOStressPlayer(object):
+    def __init__(self, trace=False, largest_only=False):
+        self.trace = trace
+        self.largest_only = largest_only
+
     # table : array of 4 Cards
     # hands : array of 6 arrays of 4 Cards
     # returns : None for no action, array of 2 Cards for a trade
-    def turn(s, table, hands):
-        move = s._turn(table, hands)
-        trace = False
+    def turn(self, table, hands):
+        move = self._turn(table, hands)
+        trace = self.trace
         if move and trace:
             c1, c2 = move
             hand = [hand for hand in hands if c1 in hand or c2 in hand][0]
@@ -18,7 +22,7 @@ class MOStressPlayer(object):
             print "trade", c1, "from", hand, "for", c2, '->', [c for c in hand if c != c1] + [c2]
         return move
 
-    def _turn(s, table, hands):
+    def _turn(self, table, hands):
         # Ignore hands that have four of a kind
         hands = [hand for hand in hands if len(hand_ranks(hand)) > 1]
 
@@ -26,7 +30,7 @@ class MOStressPlayer(object):
         # If so, swap it for one of the other cards in that hand.
         for count in [3, 2, 1]:
             for rank, hand in hands_with_kinds(hands, count):
-                if rank in (card.n() for card in table) and hand_max_kind_count(hand) == count:
+                if rank in (card.n() for card in table) and (not self.largest_only or hand_max_kind_count(hand) == count):
                     other_cards = [card for card in hand if card.n() != rank]
                     return other_cards[0], [card for card in table if card.n() == rank][0]
 
