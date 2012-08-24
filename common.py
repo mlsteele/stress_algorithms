@@ -45,8 +45,8 @@ def main():
   hands1 = group_n(deck[4:28], 4)
   hands2 = group_n(deck[28:52], 4)
 
-  algo1 = algos.stressmo.MOStressPlayer()
-  algo2 = algos.ms.MSSimple1()
+  algo1 = algos.MOStressPlayer()
+  algo2 = algos.MSSimple1()
 
   while not all(map(lambda hands: hands_are_solved(hands), [hands1, hands2])):
     print "\nturn\n"
