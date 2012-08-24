@@ -7,7 +7,12 @@ pp = pprint.pprint
 
 import algos
 if ENABLE_GRAPHICS:
-  import graphics
+  try:
+    import graphics
+  except ImportError:
+    import sys
+    print >> sys.stderr, "Couldn't import pygame; skipping"
+    ENABLE_GRAPHICS = False
 
 class Card(object):
   def __init__(s, val):
