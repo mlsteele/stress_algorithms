@@ -1,5 +1,6 @@
 from sets import Set
 from random import choice
+from itertools import groupby
 
 
 class MOStressPlayer(object):
@@ -7,15 +8,25 @@ class MOStressPlayer(object):
     # hands : array of 6 arrays of 4 Cards
     # returns : None for no action, array of 2 Cards for a trade
     def turn(s, table, hands):
+        move = s._turn(table, hands)
+        trace = False
+        if move and trace:
+            c1, c2 = move
+            hand = [hand for hand in hands if c1 in hand or c2 in hand][0]
+            if c2 in hand:
+                c1, c2 = c2, c1
+            print "trade", c1, "from", hand, "for", c2, '->', [c for c in hand if c != c1] + [c2]
+        return move
+
+    def _turn(s, table, hands):
         # Ignore hands that have four of a kind
         hands = [hand for hand in hands if len(hand_ranks(hand)) > 1]
 
         # Does any card on the table increment a hand that has (3, 2, 1) of a kind?
         # If so, swap it for one of the other cards in that hand.
         for count in [3, 2, 1]:
-            # print count, list(hands_with_kinds(hands, count))
             for rank, hand in hands_with_kinds(hands, count):
-                if rank in (card.n() for card in table):
+                if rank in (card.n() for card in table) and hand_max_kind_count(hand) == count:
                     other_cards = [card for card in hand if card.n() != rank]
                     return other_cards[0], [card for card in table if card.n() == rank][0]
 
@@ -30,6 +41,11 @@ class MOStressPlayer(object):
 
         # Otherwise, swap a random card that doesn't contribute to a set for a random card on the table.
         return choice(choice(hands)), choice(table)
+
+
+# Return the greatest number of same-ranked cards in a hand
+def hand_max_kind_count(hand):
+    max(len(list(xs)) for _, xs in groupby(sorted(card.n() for card in hand)))
 
 
 # Return the number of different ranks in the card in hands
