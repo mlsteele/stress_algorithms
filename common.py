@@ -2,7 +2,7 @@
 
 ENABLE_GRAPHICS = True
 
-import random, itertools, pprint
+import random, itertools, time, pprint
 pp = pprint.pprint
 
 import algos
@@ -60,6 +60,7 @@ def main():
     if ENABLE_GRAPHICS:
       graphics.render("%s\n%s\n%s" % (str(table), str(hands1), str(hands2)))
       graphics.handle_events()
+      time.sleep(0.2)
 
     execute_trade(algo1.turn(table, hands1), table, hands1)
     execute_trade(algo2.turn(table, hands2), table, hands2)
