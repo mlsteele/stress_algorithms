@@ -4,7 +4,7 @@ from itertools import groupby
 
 
 class MOStressPlayer(object):
-    def __init__(self, trace=False, largest_only=False):
+    def __init__(self, trace=False, largest_only=True):
         self.trace = trace
         self.largest_only = largest_only
 
@@ -25,6 +25,8 @@ class MOStressPlayer(object):
     def _turn(self, table, hands):
         # Ignore hands that have four of a kind
         hands = [hand for hand in hands if len(hand_ranks(hand)) > 1]
+        if not hands:
+            return None
 
         # Does any card on the table increment a hand that has (3, 2, 1) of a kind?
         # If so, swap it for one of the other cards in that hand.
@@ -43,16 +45,22 @@ class MOStressPlayer(object):
                         other_cards = [card for card in another_hand if card.n() == rank]
                         return other_cards[0], table[0]
 
+        # Otherwise look for a singleton
+        for hand in hands:
+            for card in hand:
+                if sum(int(other_card.n() == card.n()) for other_card in hand) == 1:
+                    return card, choice(table)
+
         # Otherwise, swap a random card that doesn't contribute to a set for a random card on the table.
         return choice(choice(hands)), choice(table)
 
 
-# Return the greatest number of same-ranked cards in a hand
+# Return the greatest count of same-ranked cards in a hand
 def hand_max_kind_count(hand):
-    max(len(list(xs)) for _, xs in groupby(sorted(card.n() for card in hand)))
+    return max(len(list(xs)) for _, xs in groupby(sorted(card.n() for card in hand)))
 
 
-# Return the number of different ranks in the card in hands
+# Return the ranks in hand
 def hand_ranks(hand):
     return Set(card.n() for card in hand)
 
