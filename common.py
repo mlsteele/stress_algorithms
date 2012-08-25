@@ -3,6 +3,7 @@
 ENABLE_GRAPHICS = True
 
 import random, itertools, time, pprint
+from card import Card
 pp = pprint.pprint
 
 import algos
@@ -13,16 +14,6 @@ if ENABLE_GRAPHICS:
     import sys
     print >> sys.stderr, "Couldn't import pygame; skipping"
     ENABLE_GRAPHICS = False
-
-class Card(object):
-  def __init__(s, val):
-    s._val = val
-
-  def n(s):
-    return s._val
-
-  def __repr__(s):
-    return "*%s" % s._val
 
 def hands_are_solved(hands):
   return all(map(lambda hand: all(map(lambda card: card.n() == hand[0].n(), hand)), hands))
