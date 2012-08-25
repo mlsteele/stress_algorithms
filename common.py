@@ -1,6 +1,7 @@
 # python 2.7
 
 ENABLE_GRAPHICS = True
+TRACE_MOVES = True
 
 import random, itertools, time, pprint
 from card import Card
@@ -19,7 +20,8 @@ def hands_are_solved(hands):
   return all(map(lambda hand: all(map(lambda card: card.n() == hand[0].n(), hand)), hands))
 
 def execute_trade(trade_cards, table, hands):
-  print "execute_trade(%s, table, hands)" % str(trade_cards)
+  if TRACE_MOVES:
+    print "execute_trade(%s, table, hands)" % str(trade_cards)
 
   if trade_cards == None: return
   c1, c2 = trade_cards
@@ -64,9 +66,10 @@ def main():
   print "game over"
 
 
-try:
-  main()
-except KeyboardInterrupt: 
-  pass
-except:
-  raise
+if __name__ == '__main__':
+  try:
+    main()
+  except KeyboardInterrupt: 
+    pass
+  except:
+    raise

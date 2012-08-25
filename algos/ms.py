@@ -3,6 +3,9 @@ from common import *
 class MSSimple1(StressfulAlgorithm):
   DEBUG = True
 
+  def __init__(s, debug=True):
+    s.DEBUG = debug
+
   def turn(s, table, hands):
     def most_common(a, eq):
       return sorted(zip(a, map(lambda e: len(filter(lambda e2: eq(e, e2), a)), a)), key=lambda p: p[1])[-1]
