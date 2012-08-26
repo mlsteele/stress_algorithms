@@ -1,4 +1,4 @@
-#/usr/bin/env python
+A#/usr/bin/env python
 import main
 from main import *
 main.TRACE_MOVES = False
@@ -10,7 +10,7 @@ def group_n(a, n):
     return map(lambda e: map(lambda t: t[0], e[1]), itertools.groupby(zip(a, [i / n for i in range(len(a))]), lambda e: e[1]))
 
 def deal():
-    deck = [Card(n) for n in range(1, 13) for suit in xrange(4)]
+    deck = [Card(n) for n in range(1, 14) for suit in xrange(4)]
     random.shuffle(deck)
     return deck[0:4], group_n(deck[4:28], 4), group_n(deck[28:52], 4)
 
