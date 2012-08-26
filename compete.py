@@ -1,4 +1,4 @@
-A#/usr/bin/env python
+#/usr/bin/env python
 import main
 from main import *
 main.TRACE_MOVES = False
@@ -41,8 +41,8 @@ def compare(algo1, algo2, games=100):
         if outcome not in outcomes:
             outcomes[outcome] = 0
         outcomes[outcome] += 1
-    for k in sorted(outcomes.keys()):
-        print k, outcomes[k], '(%2.0f%%)' % (100.0 * outcomes[k] / games)
+    for k, v in sorted(outcomes.items()):
+        print k, v, '(%2.0f%%)' % (100.0 * v / games)
 
 if __name__ == '__main__':
     compare(algos.MOStressPlayer(), algos.MSSimple1(debug=False))
