@@ -20,8 +20,8 @@ def play(algo1, algo2, round_limit=100):
     rounds = 0
     while True:
         if rounds >= round_limit * 2:
-            # print 'draw after', round_limit, 'rounds'
-            return 'draw'
+            # print 'stalemate after', round_limit, 'rounds'
+            return 'stalemate'
         rounds += 1
         player, hands, name = [[algo1, hands1, 'player 1'], [algo2, hands2, 'player2']][random.randrange(0, 2)]
         execute_trade(player.turn(table, hands), table, hands)
@@ -41,8 +41,9 @@ def compare(algo1, algo2, games=100):
         if outcome not in outcomes:
             outcomes[outcome] = 0
         outcomes[outcome] += 1
+    completed = sum(v for k, v in outcomes.items() if k != 'stalemate')
     for k, v in sorted(outcomes.items()):
-        print k, v, '(%2.0f%%)' % (100.0 * v / games)
+        print k, v, '(%2.0f%% of games)' % (100.0 * v / games), ('(%2.0f%% of completed games)' % (100.0 * v / completed) if k != 'stalemate' else '')
 
 if __name__ == '__main__':
     compare(algos.MOStressPlayer(), algos.MSSimple1(debug=False))
