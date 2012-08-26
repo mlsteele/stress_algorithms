@@ -46,6 +46,7 @@ class MOStressPlayer(object):
                         return other_cards[0], table[0]
 
         # Otherwise look for a singleton
+        # This clauses makes play slightly worse (70% wins -> 64% wins) against MSSimple1
         for hand in hands:
             for card in hand:
                 if sum(int(other_card.n() == card.n()) for other_card in hand) == 1:

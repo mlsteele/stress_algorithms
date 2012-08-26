@@ -19,12 +19,12 @@ def play(algo1, algo2, round_limit=100):
 
     rounds = 0
     while True:
-        if rounds >= round_limit:
+        if rounds >= round_limit * 2:
             # print 'draw after', round_limit, 'rounds'
             return 'draw'
         rounds += 1
-        execute_trade(algo1.turn(table, hands1), table, hands1)
-        execute_trade(algo2.turn(table, hands2), table, hands2)
+        player, hands, name = [[algo1, hands1, 'player 1'], [algo2, hands2, 'player2']][random.randrange(0, 2)]
+        execute_trade(player.turn(table, hands), table, hands)
         win1, win2 = map(lambda hands: hands_are_solved(hands), [hands1, hands2])
         if win1 and win2:
             return 'tie'
@@ -42,7 +42,7 @@ def compare(algo1, algo2, games=100):
             outcomes[outcome] = 0
         outcomes[outcome] += 1
     for k in sorted(outcomes.keys()):
-        print k, outcomes[k]
+        print k, outcomes[k], '(%2.0f%%)' % (100.0 * outcomes[k] / games)
 
 if __name__ == '__main__':
     compare(algos.MOStressPlayer(), algos.MSSimple1(debug=False))
