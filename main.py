@@ -79,12 +79,13 @@ def contest():
 def n_contests(n):
   return reduce(lambda a, c: [a[0] + c[0], a[1] + c[1]], [contest() for _ in xrange(n)], [0,0])
 
-try:
-  w1, w2 = n_contests(100)
-  print "won games"
-  print "player 1        player 2"
-  print "  %s           %s  " % (w1, w2)
-except KeyboardInterrupt: 
-  pass
-except:
-  raise
+if __name__ == '__main__':
+  try:
+    w1, w2 = n_contests(100)
+    print "won games"
+    print "player 1        player 2"
+    print "  %s           %s  " % (w1, w2)
+  except KeyboardInterrupt: 
+    pass
+  except:
+    raise
