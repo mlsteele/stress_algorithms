@@ -43,7 +43,7 @@ def contest():
   hands1 = group_n(deck[4:28], 4)
   hands2 = group_n(deck[28:52], 4)
 
-  algo1 = algos.stressmo.MOStressPlayer()
+  algo1 = algos.ms.MSSimple1()
   # algo2 = algos.stressmo.MOStressPlayer()
   algo2 = algos.ms.MSSimple1()
 

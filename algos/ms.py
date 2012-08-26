@@ -72,7 +72,7 @@ class RandHand(StressfulAlgorithm):
     cdv = lambda c: c.n()
     rci = lambda: random.randrange(4)
 
-    if s.DEBUG: print "MSRandHand turn BEGIN"
+    if s.DEBUG: print "RandHand turn BEGIN"
 
     def hand_processor(hand):
       if s.DEBUG: print "here's a hand for processing: %s" % hand
@@ -114,3 +114,40 @@ class RandHand(StressfulAlgorithm):
       # else:
       #   return random.choice(table), random.choice(unused_cards)
       return random.choice(table), random.choice(unused_cards)
+
+
+# class Devious(StressfulAlgorithm):
+#   DEBUG = True
+
+#   def turn(s, table, hands):
+#     def most_common(a, eq):
+#       return sorted(zip(a, map(lambda e: len(filter(lambda e2: eq(e, e2), a)), a)), key=lambda p: p[1])[-1]
+#     cdv = lambda c: c.n()
+#     rci = lambda: random.randrange(4)
+
+#     if s.DEBUG: print "Devious turn BEGIN"
+
+#     def hand_processor(hand):
+#       if s.DEBUG: print "here's a hand for processing: %s" % hand
+#       sorted_hand = sorted(hand, key=cdv)
+#       if s.DEBUG: print "sorted hand: %s" % sorted_hand
+#       k, count = most_common(sorted_hand, lambda a,b: a.n() == b.n())
+#       if s.DEBUG: print "processed hand to: %s" % ([k, count, sorted_hand])
+#       return k.n(), count, sorted_hand
+
+#     sorted_phands = list(reversed(sorted(map(hand_processor, hands), key=lambda ph: ph[1])))
+#     if s.DEBUG: print "sorted_phands\n---"
+#     if s.DEBUG: pp(sorted_phands)
+#     if s.DEBUG: print "--"
+
+#     unsolved_phands = filter(lambda ph: ph[1] != 4, sorted_phands)
+
+#     table_ns = set.Set(map(cdv, table))
+#     my_cards = reduce(lambda a, h: a + h, hands, [])
+
+#     # my_unsolved_numbers = set.Set(map(cdv, reduce(lambda a, ph: a + ph[2], unsolved_phands, [])))
+
+#     if one trade away from winning, do it
+#     else
+#       selfish moves = compile a list of selfish moves, sorted by beneficiality
+#       do the most selfish move that does not give away
